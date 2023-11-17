@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1700202589179,
+      "tag": "0000_naive_the_fury",
+      "breakpoints": true
+    }
+  ]
+}
