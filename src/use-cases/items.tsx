@@ -1,4 +1,4 @@
-import { ItemDto, CreateItemDto } from "@/data-access/items";
+import { CreateItemDto } from "@/data-access/items";
 import { ItemEntity, ItemEntityValidationError } from "@/entites/item";
 
 type User = {
