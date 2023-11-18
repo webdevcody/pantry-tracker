@@ -1,13 +1,14 @@
-import { db } from "@/db";
+import { getItems } from "@/data-access/items";
+import { CreateItemForm } from "./create-item-form";
+import { ItemsList } from "./items-list";
 
 export default async function Home() {
-  const allItems = await db.query.items.findMany({});
+  const items = await getItems();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {allItems.map((item) => {
-        return <div key={item.id}>{item.name}</div>;
-      })}
+    <main className="flex  flex-col items-center justify-between p-12">
+      <ItemsList items={items} />
+      <CreateItemForm />
     </main>
   );
 }
