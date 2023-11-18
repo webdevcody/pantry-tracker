@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 
 export async function Header() {
-  const session = await auth();
+  const { getUser } = await auth();
 
   return (
     <div className="border-b py-4">
@@ -13,7 +13,7 @@ export async function Header() {
         <div className="flex items-center gap-4">
           <ModeToggle />
 
-          {session?.user ? (
+          {getUser() ? (
             <Link href="/api/auth/signout">
               <Button>Sign Out</Button>
             </Link>

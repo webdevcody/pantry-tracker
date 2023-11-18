@@ -25,6 +25,7 @@ export class AuthenticationError extends Error {
 }
 
 export type CreateItem = (item: CreateItemDto) => void;
+export type DeleteItem = (itemId: number) => void;
 export type GetUser = () => User | undefined;
 
 function itemToCreateItemDtoMapper(item: ItemEntity): CreateItemDto {
@@ -57,4 +58,17 @@ export async function createItemUseCase(
   }
 
   await context.createItem(itemToCreateItemDtoMapper(item));
+}
+
+export async function deleteItemUseCase(
+  context: { getUser: GetUser; deleteItem: DeleteItem },
+  data: { itemId: number }
+) {
+  const user = context.getUser();
+
+  if (!user) {
+    throw new AuthenticationError();
+  }
+
+  await context.deleteItem(data.itemId);
 }

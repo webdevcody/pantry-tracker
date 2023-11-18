@@ -50,12 +50,12 @@ export async function createItemAction(
   state: CreateItemState,
   formData: FormData
 ): Promise<CreateItemState> {
-  const session = await auth();
+  const { getUser } = await auth();
 
   return handleFieldValidation(formData.entries(), async () => {
     await createItemUseCase(
       {
-        getUser: () => session?.user && { userId: session.user.id },
+        getUser,
         createItem,
       },
       { name: formData.get("name") as string }

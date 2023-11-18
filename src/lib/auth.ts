@@ -36,12 +36,13 @@ export const config = {
 } satisfies AuthOptions;
 
 // Use it in server contexts
-export function auth(
+export async function auth(
   ...args:
     | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
     | [NextApiRequest, NextApiResponse]
     | []
 ) {
   unstable_noStore();
-  return getServerSession(...args, config);
+  const session = await getServerSession(...args, config);
+  return { getUser: () => session?.user && { userId: session.user.id } };
 }
