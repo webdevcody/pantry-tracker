@@ -18,7 +18,7 @@ export class ValidationError extends Error {
   }
 }
 
-export class AuthenticationdError extends Error {
+export class AuthenticationError extends Error {
   constructor() {
     super("You must be authenticated to do this action");
   }
@@ -27,6 +27,13 @@ export class AuthenticationdError extends Error {
 export type CreateItem = (item: CreateItemDto) => void;
 export type GetUser = () => User | undefined;
 
+function itemToCreateItemDtoMapper(item: ItemEntity): CreateItemDto {
+  return {
+    name: item.getName(),
+    userId: item.getUserId(),
+  };
+}
+
 export async function createItemUseCase(
   context: { getUser: GetUser; createItem: CreateItem },
   data: { name: string }
@@ -34,7 +41,7 @@ export async function createItemUseCase(
   const user = context.getUser();
 
   if (!user) {
-    throw new AuthenticationdError();
+    throw new AuthenticationError();
   }
 
   const item = new ItemEntity({
@@ -49,8 +56,5 @@ export async function createItemUseCase(
     throw new ValidationError(error.getErrors());
   }
 
-  await context.createItem({
-    name: item.getName(),
-    userId: item.getUserId(),
-  });
+  await context.createItem(itemToCreateItemDtoMapper(item));
 }

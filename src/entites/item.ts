@@ -45,7 +45,6 @@ export class ItemEntity {
   }
 
   validate() {
-    console.log("name", this.name);
     const itemSchema = z.object({
       name: z.string().min(1),
       userId: z.string().min(1),
@@ -56,7 +55,6 @@ export class ItemEntity {
     } catch (err) {
       const error = err as ZodError;
       const errors = error.flatten().fieldErrors;
-      console.log(errors);
       throw new ItemEntityValidationError({
         name: errors.name?.[0],
         userId: errors.userId?.[0],
