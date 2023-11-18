@@ -9,13 +9,6 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
-export const items = pgTable("items", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
-});
-
-export type Item = typeof items.$inferSelect;
-
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
   name: text("name"),
@@ -65,3 +58,13 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey(vt.identifier, vt.token),
   })
 );
+
+export const items = pgTable("items", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export type Item = typeof items.$inferSelect;

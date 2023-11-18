@@ -5,9 +5,17 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import { getServerSession } from "next-auth";
+import { AuthOptions, DefaultSession, getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { unstable_noStore } from "next/cache";
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+}
 
 export const config = {
   adapter: DrizzleAdapter(db),
@@ -17,7 +25,15 @@ export const config = {
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
-};
+  callbacks: {
+    session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+  },
+} satisfies AuthOptions;
 
 // Use it in server contexts
 export function auth(

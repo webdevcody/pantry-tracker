@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { deleteItemAction } from "./actions";
 import { Item } from "@/db/schema";
 import { sortBy } from "lodash";
+import { ItemDto } from "@/data-access/items";
 
-export function ItemsList({ items }: { items: Item[] }) {
+export function ItemsList({ items }: { items: ItemDto[] }) {
   const sortedItems = sortBy(items, ["name"]);
 
   return (

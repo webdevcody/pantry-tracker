@@ -1,13 +1,16 @@
 "use server";
 
 import { createItem, deleteItem } from "@/data-access/items";
+import { ItemEntityValidationError } from "@/entites/item";
+import { auth } from "@/lib/auth";
+import { ValidationError, createItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
-import { ZodError, z } from "zod";
 
 type CreateItemState = {
   errors: Partial<{ name: string }>;
   form: { name: string };
-  status: "pending" | "success" | "errors";
+  error?: string;
+  status: "pending" | "success" | "errors" | "field-errors";
 };
 
 export async function createItemAction(
@@ -16,17 +19,16 @@ export async function createItemAction(
 ): Promise<CreateItemState> {
   "use server";
 
-  const itemSchema = z.object({
-    name: z.string().min(1),
-  });
-
-  const submittedForm = {
-    name: formData.get("name") as string,
-  };
+  const session = await auth();
 
   try {
-    const itemToCreate = itemSchema.parse(submittedForm);
-    await createItem(itemToCreate.name);
+    await createItemUseCase(
+      {
+        getUser: () => session?.user && { userId: session.user.id },
+        createItem,
+      },
+      { name: formData.get("name") as string }
+    );
     revalidatePath("/");
     return {
       errors: {},
@@ -36,17 +38,27 @@ export async function createItemAction(
       status: "success",
     };
   } catch (err) {
-    const error = err as ZodError;
-    const errors = error.flatten().fieldErrors;
-    return {
-      form: {
-        name: formData.get("name") as string,
-      },
-      status: "errors",
-      errors: {
-        name: errors.name?.[0],
-      },
-    };
+    const error = err as Error;
+    if (error instanceof ValidationError) {
+      return {
+        form: {
+          name: formData.get("name") as string,
+        },
+        status: "field-errors",
+        errors: {
+          name: error.getErrors().name,
+        },
+      };
+    } else {
+      return {
+        form: {
+          name: formData.get("name") as string,
+        },
+        status: "errors",
+        error: error.message,
+        errors: {},
+      };
+    }
   }
 }
 

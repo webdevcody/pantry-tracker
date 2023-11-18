@@ -7,6 +7,8 @@ import { createItemAction } from "./actions";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 export function CreateItemForm() {
   const { toast } = useToast();
@@ -32,23 +34,32 @@ export function CreateItemForm() {
   }, [toast, formState]);
 
   return (
-    <form
-      ref={formRef}
-      action={onCreateItemAction}
-      className="flex flex-col gap-4"
-    >
-      <Label htmlFor="item-name"></Label>
-      <Input
-        data-testid="item-name"
-        defaultValue={formState.form.name}
-        name="name"
-        id="item-name"
-        autoFocus
-      ></Input>
-      <Error error={formState.errors.name} />
+    <>
+      {formState.status === "errors" && (
+        <Alert variant={"destructive"}>
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Uh oh!</AlertTitle>
+          <AlertDescription>{formState.error}</AlertDescription>
+        </Alert>
+      )}
+      <form
+        ref={formRef}
+        action={onCreateItemAction}
+        className="flex flex-col gap-4"
+      >
+        <Label htmlFor="item-name"></Label>
+        <Input
+          data-testid="item-name"
+          defaultValue={formState.form.name}
+          name="name"
+          id="item-name"
+          autoFocus
+        ></Input>
+        <Error error={formState.errors.name} />
 
-      <SubmitButton />
-    </form>
+        <SubmitButton />
+      </form>
+    </>
   );
 }
 

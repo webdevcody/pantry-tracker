@@ -15,6 +15,20 @@
       "when": 1700278901574,
       "tag": "0001_gorgeous_runaways",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1700279901617,
+      "tag": "0002_powerful_dorian_gray",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1700282764101,
+      "tag": "0003_brave_master_mold",
+      "breakpoints": true
     }
   ]
 }
