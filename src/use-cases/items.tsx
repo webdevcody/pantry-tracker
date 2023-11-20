@@ -32,12 +32,13 @@ function itemToCreateItemDtoMapper(item: ItemEntity): CreateItemDto {
   return {
     name: item.getName(),
     userId: item.getUserId(),
+    quantity: item.getQuantity(),
   };
 }
 
 export async function createItemUseCase(
   context: { getUser: GetUser; createItem: CreateItem },
-  data: { name: string }
+  data: { name: string; quantity: number }
 ) {
   const user = context.getUser();
 
@@ -46,6 +47,7 @@ export async function createItemUseCase(
   }
 
   const item = new ItemEntity({
+    quantity: data.quantity,
     name: data.name,
     userId: user.userId,
   });

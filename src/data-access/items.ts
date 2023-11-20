@@ -7,23 +7,24 @@ import { eq } from "drizzle-orm";
 export type ItemDto = {
   id: number;
   name: string;
-  userId: string;
+  quantity: number;
 };
 
 export type CreateItemDto = {
   name: string;
   userId: string;
+  quantity: number;
 };
 
 export type ItemId = number;
 
 export async function getItems(): Promise<ItemDto[]> {
-  const items = await db.query.items.findMany({});
+  const items = await db.query.items.findMany();
 
   return items.map((item) => ({
     id: item.id,
     name: item.name,
-    userId: item.userId,
+    quantity: item.quantity,
   }));
 }
 

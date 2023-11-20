@@ -62,6 +62,7 @@ export const verificationTokens = pgTable(
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
+  quantity: integer("quantity").notNull().default(0),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

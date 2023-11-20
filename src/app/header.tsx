@@ -6,14 +6,25 @@ import Link from "next/link";
 export async function Header() {
   const { getUser } = await auth();
 
+  const user = getUser();
+
   return (
     <div className="border-b py-4">
       <div className="container mx-auto flex justify-between items-center">
         <div>LOGO</div>
-        <div className="flex items-center gap-4">
+
+        <div>
+          {user && (
+            <Link href="/dashboard">
+              <Button variant={"ghost"}>Manage Pantry</Button>
+            </Link>
+          )}
+        </div>
+
+        <div className="flex justify-between gap-4">
           <ModeToggle />
 
-          {getUser() ? (
+          {user ? (
             <Link href="/api/auth/signout">
               <Button>Sign Out</Button>
             </Link>

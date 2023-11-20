@@ -15,5 +15,5 @@ export async function deleteItemAction(itemId: number) {
     },
     { itemId }
   );
-  revalidatePath("/");
+  revalidatePath("/dashboard");
 }

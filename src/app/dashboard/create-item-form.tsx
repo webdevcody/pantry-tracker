@@ -15,6 +15,7 @@ export function CreateItemForm() {
   const [formState, onCreateItemAction] = useFormState(createItemAction, {
     form: {
       name: "",
+      quantity: "1",
     },
     status: "default",
   });
@@ -32,6 +33,7 @@ export function CreateItemForm() {
 
   return (
     <>
+      <h2 className="text-3xl mb-8">Add Entry</h2>
       {formState.status === "error" && (
         <Alert variant={"destructive"}>
           <Terminal className="h-4 w-4" />
@@ -44,7 +46,7 @@ export function CreateItemForm() {
         action={onCreateItemAction}
         className="flex flex-col gap-4"
       >
-        <Label htmlFor="item-name"></Label>
+        <Label htmlFor="item-name">Item Name</Label>
         <Input
           data-testid="item-name"
           defaultValue={formState.form.name}
@@ -54,6 +56,19 @@ export function CreateItemForm() {
         ></Input>
         {formState.status === "field-errors" && (
           <Error error={formState.errors.name} />
+        )}
+
+        <Label htmlFor="quantity">Quantity</Label>
+        <Input
+          data-testid="quantity"
+          defaultValue={formState.form.quantity}
+          name="quantity"
+          type="number"
+          id="quantity"
+          autoFocus
+        ></Input>
+        {formState.status === "field-errors" && (
+          <Error error={formState.errors.quantity} />
         )}
 
         <SubmitButton />
