@@ -54,6 +54,10 @@ export class ItemEntity {
     return this.id;
   }
 
+  setQuantity(quantity: number) {
+    this.quantity = quantity;
+  }
+
   validate() {
     const itemSchema = z.object({
       name: z

@@ -8,9 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "deploy": ". ./load-env.sh .env.prod && sst deploy --stage prod",
-    "migrations:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
-    "migrations:drop": "drizzle-kit drop --config=drizzle.config.ts",
-    "migrate": "tsx src/migrate.ts",
     "db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
     "studio": "drizzle-kit studio"
   },

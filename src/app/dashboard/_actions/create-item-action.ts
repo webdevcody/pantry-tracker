@@ -1,6 +1,6 @@
 "use server";
 
-import { createItem, deleteItem } from "@/data-access/items";
+import { createItem, getUserItemByName } from "@/data-access/items";
 import { auth } from "@/lib/auth";
 import { ValidationError, createItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
@@ -43,6 +43,7 @@ export async function createItemAction(
       {
         getUser,
         createItem,
+        getUserItemByName,
       },
       {
         name: submittedForm.name.toLowerCase(),
@@ -58,7 +59,6 @@ export async function createItemAction(
       status: "success",
     };
   } catch (err) {
-    console.log(err);
     const error = err as Error;
     if (error instanceof ValidationError) {
       return {

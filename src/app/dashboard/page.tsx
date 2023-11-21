@@ -8,7 +8,7 @@ export default async function Dashboard() {
   return (
     <main className="grid grid-cols-3 p-12 gap-12">
       <div className="col-span-2">
-        <h1 className="text-4xl mb-8">Your Pantry Items</h1>
+        <h1 className="text-4xl mb-8">Your Pantry Items ({items.length})</h1>
         <ItemsTable items={items} />
       </div>
       <div className="col-span-1">

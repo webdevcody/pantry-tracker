@@ -5,9 +5,10 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Minus, MoreHorizontal, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteItemAction } from "./_actions/delete-item-action";
+import { incrementItemAction } from "./_actions/increment-item-action";
+import { decrementItemAction } from "./_actions/decrement-item-action";
 
 export type Item = {
   id: number;
@@ -39,6 +42,19 @@ export const columns: ColumnDef<Item>[] = [
   {
     accessorKey: "quantity",
     header: "Quantity",
+    cell: ({ row }) => {
+      return (
+        <form className="flex gap-2 items-center">
+          <button formAction={decrementItemAction.bind(null, row.original.id)}>
+            <Minus />
+          </button>
+          {row.original.quantity}
+          <button formAction={incrementItemAction.bind(null, row.original.id)}>
+            <Plus />
+          </button>
+        </form>
+      );
+    },
   },
   {
     id: "actions",
@@ -71,8 +87,12 @@ export function ItemsTable({ items }: { items: Item[] }) {
   const table = useReactTable({
     data: items,
     columns,
+    autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
-    state: {},
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: [{ id: "name", desc: false }],
+    },
   });
 
   return (
