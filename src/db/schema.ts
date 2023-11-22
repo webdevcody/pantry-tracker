@@ -6,6 +6,8 @@ import {
   varchar,
   primaryKey,
   integer,
+  date,
+  boolean,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
@@ -66,6 +68,20 @@ export const items = pgTable("items", {
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  isLow: boolean("isLow").notNull().default(false),
+});
+
+export const seats = pgTable("seats", {
+  seatId: text("seat").primaryKey(),
+  userId: text("userId").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+});
+
+export const counts = pgTable("counts", {
+  id: serial("id").primaryKey(),
+  count: integer("count").notNull(),
+  version: integer("version").notNull().default(0),
 });
 
 export type Item = typeof items.$inferSelect;
+export type Count = typeof counts.$inferSelect;

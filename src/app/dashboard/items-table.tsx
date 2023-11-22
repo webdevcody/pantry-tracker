@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from "react";
 import {
   ColumnDef,
+  Row,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -26,7 +28,9 @@ import {
 } from "@/components/ui/table";
 import { deleteItemAction } from "./_actions/delete-item-action";
 import { incrementItemAction } from "./_actions/increment-item-action";
-import { decrementItemAction } from "./_actions/decrement-item-action";
+import { State, decrementItemAction } from "./_actions/decrement-item-action";
+import { useFormState } from "react-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 export type Item = {
   id: number;
@@ -34,56 +38,86 @@ export type Item = {
   quantity: number;
 };
 
-export const columns: ColumnDef<Item>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-    cell: ({ row }) => {
-      return (
-        <form className="flex gap-2 items-center">
-          <button formAction={decrementItemAction.bind(null, row.original.id)}>
-            <Minus />
-          </button>
-          {row.original.quantity}
-          <button formAction={incrementItemAction.bind(null, row.original.id)}>
-            <Plus />
-          </button>
-        </form>
-      );
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => {
-                deleteItemAction(row.original.id);
-              }}
-            >
-              Remove
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export function ItemsTable({ items }: { items: Item[] }) {
+  const { toast } = useToast();
+  const [decrementState, decrementAction] = useFormState(decrementItemAction, {
+    showToast: false,
+  });
+
+  const [incrementState, incrementAction] = useFormState(incrementItemAction, {
+    showToast: false,
+  });
+
+  useEffect(() => {
+    if (decrementState.showToast)
+      toast({
+        title: "Item Moved",
+        description: "We moved your item to the out of tab",
+      });
+  }, [toast, decrementState]);
+
+  useEffect(() => {
+    if (incrementState.showToast)
+      toast({
+        title: "Item Moved",
+        description: "We moved your item to the in stock tab",
+      });
+  }, [toast, incrementState]);
+
+  const columns: ColumnDef<Item>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "quantity",
+      header: "Quantity",
+      cell: ({ row }) => {
+        return (
+          <form className="flex gap-2 items-center">
+            <input type="hidden" name="itemId" value={row.original.id} />
+            <button
+              className="disabled:text-gray-600"
+              disabled={row.original.quantity === 0}
+              formAction={decrementAction}
+            >
+              <Minus />
+            </button>
+            {row.original.quantity}
+            <button formAction={incrementAction}>
+              <Plus />
+            </button>
+          </form>
+        );
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  deleteItemAction(row.original.id);
+                }}
+              >
+                Remove
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+
   const table = useReactTable({
     data: items,
     columns,

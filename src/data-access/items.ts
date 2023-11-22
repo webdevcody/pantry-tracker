@@ -9,6 +9,7 @@ export type ItemDto = {
   name: string;
   quantity: number;
   userId: string;
+  isLow: boolean;
 };
 
 export type CreateItemDto = {
@@ -25,6 +26,7 @@ function toDtoMapper(item: Item) {
     name: item.name,
     quantity: item.quantity,
     userId: item.userId,
+    isLow: item.isLow,
   };
 }
 

@@ -42,7 +42,7 @@ function itemToCreateItemDtoMapper(item: ItemEntity): CreateItemDto {
   };
 }
 
-function toItemDtoMapper(item: ItemEntity): ItemDto {
+function itemToDto(item: ItemEntity): ItemDto {
   const itemId = item.getId();
 
   if (!itemId) {
@@ -54,6 +54,7 @@ function toItemDtoMapper(item: ItemEntity): ItemDto {
     name: item.getName(),
     userId: item.getUserId(),
     quantity: item.getQuantity(),
+    isLow: item.getIsLow(),
   };
 }
 
@@ -78,7 +79,7 @@ export async function createItemUseCase(
       ...existingItem,
       quantity: existingItem.quantity + data.quantity,
     });
-    await updateItem(toItemDtoMapper(updatedItem));
+    await updateItem(itemToDto(updatedItem));
     return;
   }
 
@@ -114,7 +115,7 @@ export async function deleteItemUseCase(
 export async function incrementItemUseCase(
   context: { getUser: GetUser; updateItem: UpdateItem; getItem: GetItem },
   data: { itemId: number }
-) {
+): Promise<ItemDto> {
   const user = context.getUser();
 
   if (!user) {
@@ -125,7 +126,9 @@ export async function incrementItemUseCase(
 
   item.setQuantity(item.getQuantity() + 1);
 
-  await context.updateItem(toItemDtoMapper(item));
+  await context.updateItem(itemToDto(item));
+
+  return itemToDto(item);
 }
 
 export async function decrementItemUseCase(
@@ -145,13 +148,13 @@ export async function decrementItemUseCase(
 
   const item = new ItemEntity(await context.getItem(data.itemId));
 
-  if (item.getQuantity() <= 1) {
-    await context.deleteItem(item.getId()!);
-  } else {
+  if (item.getQuantity() >= 1) {
     item.setQuantity(item.getQuantity() - 1);
   }
 
   item.validate();
 
-  await context.updateItem(toItemDtoMapper(item));
+  await context.updateItem(itemToDto(item));
+
+  return itemToDto(item);
 }

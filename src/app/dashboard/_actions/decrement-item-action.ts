@@ -5,10 +5,19 @@ import { decrementItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
 import { updateItem, getItem, deleteItem } from "@/data-access/items";
 
-export async function decrementItemAction(itemId: number) {
+export type State = {
+  showToast: boolean;
+};
+
+export async function decrementItemAction(
+  state: State,
+  formData: FormData
+): Promise<State> {
   const { getUser } = await auth();
 
-  await decrementItemUseCase(
+  const itemId = parseInt(formData.get("itemId") as string);
+
+  const item = await decrementItemUseCase(
     {
       getUser,
       updateItem,
@@ -21,4 +30,7 @@ export async function decrementItemAction(itemId: number) {
   );
 
   revalidatePath("/dashboard");
+  return {
+    showToast: item.quantity === 0,
+  };
 }
