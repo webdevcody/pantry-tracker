@@ -146,7 +146,8 @@ export async function decrementItemUseCase(
     throw new AuthenticationError();
   }
 
-  const item = new ItemEntity(await context.getItem(data.itemId));
+  const dataItem = await context.getItem(data.itemId);
+  const item = new ItemEntity(dataItem);
 
   if (item.getQuantity() >= 1) {
     item.setQuantity(item.getQuantity() - 1);

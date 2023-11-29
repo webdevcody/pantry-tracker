@@ -71,17 +71,4 @@ export const items = pgTable("items", {
   isLow: boolean("isLow").notNull().default(false),
 });
 
-export const seats = pgTable("seats", {
-  seatId: text("seat").primaryKey(),
-  userId: text("userId").notNull(),
-  expiresAt: timestamp("expiresAt").notNull(),
-});
-
-export const counts = pgTable("counts", {
-  id: serial("id").primaryKey(),
-  count: integer("count").notNull(),
-  version: integer("version").notNull().default(0),
-});
-
 export type Item = typeof items.$inferSelect;
-export type Count = typeof counts.$inferSelect;
