@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormState, useFormStatus } from "react-dom";
-import { useEffect, useRef } from "react";
+import { HTMLAttributes, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 import { createItemAction } from "./_actions/create-item-action";
+import { cn } from "@/lib/utils";
 
 export function CreateItemForm() {
   const { toast } = useToast();
@@ -71,7 +72,7 @@ export function CreateItemForm() {
           <Error error={formState.errors.quantity} />
         )}
 
-        <SubmitButton />
+        <SubmitButton idleText="Add Item" submittingText="Adding Item..." />
       </form>
     </>
   );
@@ -81,16 +82,26 @@ function Error({ error }: { error?: string }) {
   return error ? <span className="text-red-400">{error}</span> : null;
 }
 
-function SubmitButton() {
+function SubmitButton({
+  idleText,
+  submittingText,
+  ...props
+}: HTMLAttributes<HTMLButtonElement> & {
+  idleText: string;
+  submittingText: string;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <Button
-      data-testid="create-item"
-      className="disabled:bg-gray-400 disabled:cursor-default"
+      {...props}
+      className={cn(
+        "disabled:bg-gray-400 disabled:cursor-default",
+        props.className
+      )}
       disabled={pending}
     >
-      {pending ? "Adding Item..." : "Add Item"}
+      {pending ? submittingText : idleText}
     </Button>
   );
 }

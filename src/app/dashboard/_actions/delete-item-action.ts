@@ -5,8 +5,17 @@ import { auth } from "@/lib/auth";
 import { deleteItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
 
-export async function deleteItemAction(itemId: number) {
+export type DeleteFormState = {
+  showToast: boolean;
+};
+
+export async function deleteItemAction(
+  state: DeleteFormState,
+  formData: FormData
+) {
   const { getUser } = await auth();
+
+  const itemId = parseInt(formData.get("itemId") as string);
 
   await deleteItemUseCase(
     {
@@ -16,4 +25,7 @@ export async function deleteItemAction(itemId: number) {
     { itemId }
   );
   revalidatePath("/dashboard");
+  return {
+    showToast: true,
+  };
 }
