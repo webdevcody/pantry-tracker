@@ -1,26 +1,27 @@
 "use server";
 
-import { deleteItem } from "@/data-access/items";
+import { getItem, updateItem } from "@/data-access/items";
 import { auth } from "@/lib/auth";
-import { deleteItemUseCase } from "@/use-cases/items/delete-item-use-case";
+import { unmarkAsLowUseCase } from "@/use-cases/items/unmark-as-low-use-case";
 import { revalidatePath } from "next/cache";
 
-export type DeleteFormState = {
+export type MarkLowState = {
   showToast: boolean;
 };
 
-export async function deleteItemAction(
-  state: DeleteFormState,
+export async function unmarkAsLowAction(
+  state: MarkLowState,
   formData: FormData
 ) {
   const { getUser } = await auth();
 
   const itemId = parseInt(formData.get("itemId") as string);
 
-  await deleteItemUseCase(
+  await unmarkAsLowUseCase(
     {
-      deleteItem,
+      updateItem,
       getUser,
+      getItem,
     },
     { itemId }
   );

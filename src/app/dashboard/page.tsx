@@ -3,8 +3,11 @@ import { CreateItemForm } from "./create-item-form";
 import { ItemsTable } from "./items-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { partition } from "lodash";
+import { unstable_noStore } from "next/cache";
 
 export default async function Dashboard() {
+  unstable_noStore();
+
   const items = await getItems();
 
   const [outOfItems, itemsInPantry] = partition(

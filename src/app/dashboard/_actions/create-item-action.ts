@@ -2,7 +2,8 @@
 
 import { createItem, getUserItemByName } from "@/data-access/items";
 import { auth } from "@/lib/auth";
-import { ValidationError, createItemUseCase } from "@/use-cases/items";
+import { createItemUseCase } from "@/use-cases/items/create-item-use-case";
+import { ValidationError } from "@/use-cases/items/utils";
 import { revalidatePath } from "next/cache";
 
 type Form = {
@@ -10,21 +11,29 @@ type Form = {
   quantity: string;
 };
 
+type FieldErrorsState = {
+  status: "field-errors";
+  errors: Partial<Record<keyof Form, string>>;
+};
+
+type DefaultState = {
+  status: "default";
+};
+
+type SubmitErrorState = {
+  status: "error";
+  errors: string;
+};
+
+type SuccessState = {
+  status: "success";
+};
+
 type CreateItemState = { form: Form } & (
-  | {
-      status: "success";
-    }
-  | {
-      status: "error";
-      errors: string;
-    }
-  | {
-      status: "field-errors";
-      errors: Partial<Record<keyof Form, string>>;
-    }
-  | {
-      status: "default";
-    }
+  | SuccessState
+  | SubmitErrorState
+  | FieldErrorsState
+  | DefaultState
 );
 
 export async function createItemAction(

@@ -11,6 +11,10 @@ npm run dev
 open http://localhost:3000
 ```
 
+## Project Goals
+
+- Everything works using progressive enhancement (all functionality works with javascript disabled)
+
 ## The Architecture
 
 In this project, I am trying to apply clean architecture principles, including a separate data access layer (drizzle), a business layer (use cases and business entities), and a presentational layer (server actions / next rsc data fetchers). This also include following paradigms including dependency inversion, meaning the business layer should know NOTHING about next.js, server actions, the database or ORM, etc. To achieve this, often inside the next server actions, we inject the use case dependencies as functional dependencies (context). I do no like using existing libraries that wire up all the dependencies or using decorators on top of functions which automatically inject things from some type of global registration service object.
@@ -21,7 +25,6 @@ To some this may feel like over engineering, but many could argue this helps bui
 
 I will say, I've never done this clean architecture type of approach on a next.js project, so I'm trying to get a feel for how I personally like it all setup. I've decided to defer using a mono repo and separating out the business logic / persistence layer until I feel it's necessary.
 
-## Goals
+## TODO
 
-- try to get the entire app working using progressive enhancement (it should work without javascript enabled)
-- make it all responsive
+- make everything responsive

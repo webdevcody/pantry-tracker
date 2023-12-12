@@ -47,6 +47,7 @@ export function CreateItemForm() {
         action={onCreateItemAction}
         className="flex flex-col gap-4"
       >
+        <div className="flex flex-col gap-"></div>
         <Label htmlFor="item-name">Item Name</Label>
         <Input
           data-testid="item-name"
@@ -54,6 +55,9 @@ export function CreateItemForm() {
           name="name"
           id="item-name"
           autoFocus
+          hasError={
+            formState.status === "field-errors" && !!formState.errors.name
+          }
         ></Input>
         {formState.status === "field-errors" && (
           <Error error={formState.errors.name} />

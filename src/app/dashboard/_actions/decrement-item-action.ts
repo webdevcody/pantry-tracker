@@ -1,9 +1,9 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { decrementItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
 import { updateItem, getItem, deleteItem } from "@/data-access/items";
+import { decrementItemUseCase } from "@/use-cases/items/decrement-item-use-case";
 
 export type State = {
   showToast: boolean;

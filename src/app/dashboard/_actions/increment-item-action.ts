@@ -1,10 +1,10 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { incrementItemUseCase } from "@/use-cases/items";
 import { revalidatePath } from "next/cache";
 import { updateItem, getItem } from "@/data-access/items";
 import { State } from "./decrement-item-action";
+import { incrementItemUseCase } from "@/use-cases/items/increment-item-use-case";
 
 export async function incrementItemAction(
   state: State,

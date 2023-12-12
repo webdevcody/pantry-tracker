@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -28,18 +29,30 @@ import {
 } from "@/components/ui/table";
 import { deleteItemAction } from "./_actions/delete-item-action";
 import { incrementItemAction } from "./_actions/increment-item-action";
-import { State, decrementItemAction } from "./_actions/decrement-item-action";
+import { decrementItemAction } from "./_actions/decrement-item-action";
 import { useFormState } from "react-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { markAsLowAction } from "./_actions/mark-as-low-action";
+import { unmarkAsLowAction } from "./_actions/unmark-as-low-action";
 
 export type Item = {
   id: number;
   name: string;
   quantity: number;
+  isLow: boolean;
 };
 
 export function ItemsTable({ items }: { items: Item[] }) {
   const { toast } = useToast();
+
+  const [unmarkLowState, unmarkAsLow] = useFormState(unmarkAsLowAction, {
+    showToast: false,
+  });
+
+  const [markLowState, markAsLow] = useFormState(markAsLowAction, {
+    showToast: false,
+  });
+
   const [decrementState, decrementAction] = useFormState(decrementItemAction, {
     showToast: false,
   });
@@ -51,6 +64,22 @@ export function ItemsTable({ items }: { items: Item[] }) {
   const [deleteState, deleteAction] = useFormState(deleteItemAction, {
     showToast: false,
   });
+
+  useEffect(() => {
+    if (unmarkLowState.showToast)
+      toast({
+        title: "Item Unmarked as Low",
+        description: "This item was unmarked as low",
+      });
+  }, [toast, unmarkLowState]);
+
+  useEffect(() => {
+    if (markLowState.showToast)
+      toast({
+        title: "Item Marked as Low",
+        description: "This item was marked as low",
+      });
+  }, [toast, markLowState]);
 
   useEffect(() => {
     if (deleteState.showToast)
@@ -117,6 +146,30 @@ export function ItemsTable({ items }: { items: Item[] }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {row.original.isLow ? (
+                  <DropdownMenuItem>
+                    <form action={unmarkAsLow}>
+                      <input
+                        type="hidden"
+                        value={row.original.id}
+                        name="itemId"
+                      />
+                      <button>Unmark as Low</button>
+                    </form>
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem>
+                    <form action={markAsLow}>
+                      <input
+                        type="hidden"
+                        value={row.original.id}
+                        name="itemId"
+                      />
+                      <button>Mark as Low</button>
+                    </form>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <form action={deleteAction}>
                     <input
@@ -124,7 +177,9 @@ export function ItemsTable({ items }: { items: Item[] }) {
                       value={row.original.id}
                       name="itemId"
                     />
-                    <button>Remove</button>
+                    <button className="text-red-500 hover:text-red-400">
+                      Remove
+                    </button>
                   </form>
                 </DropdownMenuItem>
               </DropdownMenuContent>

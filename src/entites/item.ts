@@ -40,6 +40,8 @@ export class ItemEntity {
     this.userId = userId;
     this.quantity = quantity;
     this.isLow = isLow;
+
+    this.validate();
   }
 
   getName() {
@@ -62,6 +64,18 @@ export class ItemEntity {
     return this.isLow;
   }
 
+  decrement() {
+    if (this.quantity === 0) {
+      throw new Error("you can not decrement an item already at quantity zero");
+    }
+
+    this.quantity--;
+
+    if (this.quantity === 0) {
+      this.isLow = false;
+    }
+  }
+
   setIsLow(isLow: boolean) {
     this.isLow = isLow;
   }
@@ -70,12 +84,23 @@ export class ItemEntity {
     this.quantity = quantity;
   }
 
-  validate() {
+  markAsLow() {
+    if (this.quantity === 0) {
+      throw new Error("you can not mark an out of stock item as low");
+    }
+    this.isLow = true;
+  }
+
+  unmarkAsLow() {
+    this.isLow = false;
+  }
+
+  private validate() {
     const itemSchema = z.object({
       name: z
         .string()
-        .regex(/^[a-z]+$/)
-        .min(1),
+        .min(1)
+        .regex(/^[a-z]+$/, "Name must only contain lower case letters"),
       userId: z.string().min(1),
       quantity: z.number().min(0),
       isLow: z.boolean().default(false),
