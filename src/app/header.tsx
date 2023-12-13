@@ -1,6 +1,7 @@
 import { ModeToggle } from "./theme-toggle";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
+import Image from "next/image";
 import Link from "next/link";
 
 export async function Header() {
@@ -11,7 +12,15 @@ export async function Header() {
   return (
     <div className="border-b py-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div>LOGO</div>
+        <div className="flex gap-1 items-center text-xl">
+          <Image
+            src="/logo.png"
+            width="50"
+            height="50"
+            alt="pantry tracker logo"
+          />{" "}
+          PantryTracker
+        </div>
 
         <div>
           {user && (

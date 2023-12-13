@@ -3,16 +3,9 @@ import "server-only";
 import { db } from "@/db";
 import { Item, items } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { ItemDto } from "@/use-cases/items/types";
 
 export type ItemId = number;
-
-export type ItemDto = {
-  id: number;
-  name: string;
-  quantity: number;
-  userId: string;
-  isLow: boolean;
-};
 
 export function toDtoMapper(item: Item) {
   return {

@@ -20,8 +20,8 @@ export default async function Dashboard() {
   );
 
   return (
-    <main className="grid grid-cols-3 p-12 gap-12">
-      <div className="col-span-2">
+    <main className="grid grid-cols-3 p-12 gap-12 max-w-screen-xl mx-auto">
+      <div className="col-span-3 md:col-span-2">
         <h1 className="text-4xl mb-8">Your Pantry</h1>
 
         <Tabs defaultValue="items">
@@ -47,7 +47,7 @@ export default async function Dashboard() {
           </TabsContent>
         </Tabs>
       </div>
-      <div className="col-span-1">
+      <div className="col-span-3 md:col-span-1">
         <CreateItemForm />
       </div>
     </main>

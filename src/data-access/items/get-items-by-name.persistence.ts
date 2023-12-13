@@ -1,9 +1,10 @@
 import "server-only";
 
 import { db } from "@/db";
-import { Item, items } from "@/db/schema";
+import { items } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
-import { ItemDto, toDtoMapper } from "./get-item.persistence";
+import { toDtoMapper } from "./get-item.persistence";
+import { ItemDto } from "@/use-cases/items/types";
 
 export async function getUserItemByName(
   userId: string,
