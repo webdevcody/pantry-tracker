@@ -1,19 +1,17 @@
-import { updateItem } from "@/data-access/items";
 import { ItemEntity, ItemEntityValidationError } from "@/entites/item";
 import {
-  GetUser,
-  CreateItem,
-  GetUserItemByName,
   AuthenticationError,
   itemToDto,
   ValidationError,
   itemToCreateItemDtoMapper,
 } from "./utils";
+import { CreateItem, GetUser, GetUserItemByName, UpdateItem } from "./types";
 
 export async function createItemUseCase(
   context: {
     getUser: GetUser;
     createItem: CreateItem;
+    updateItem: UpdateItem;
     getUserItemByName: GetUserItemByName;
   },
   data: { name: string; quantity: number }
@@ -31,7 +29,7 @@ export async function createItemUseCase(
       ...existingItem,
       quantity: existingItem.quantity + data.quantity,
     });
-    await updateItem(itemToDto(updatedItem));
+    await context.updateItem(itemToDto(updatedItem));
     return;
   }
 

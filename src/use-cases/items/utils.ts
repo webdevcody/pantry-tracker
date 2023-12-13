@@ -1,16 +1,5 @@
-export type ItemDto = {
-  id: number;
-  name: string;
-  quantity: number;
-  userId: string;
-  isLow: boolean;
-};
-
-export type CreateItemDto = {
-  name: string;
-  userId: string;
-  quantity: number;
-};
+import { ItemEntity } from "@/entites/item";
+import { CreateItemDto, ItemDto } from "./types";
 
 export class ValidationError extends Error {
   private errors: Record<string, string | undefined>;
@@ -30,22 +19,6 @@ export class AuthenticationError extends Error {
     super("You must be authenticated to do this action");
   }
 }
-
-export type User = {
-  userId: string;
-};
-
-export type CreateItem = (item: CreateItemDto) => void;
-export type DeleteItem = (itemId: number) => void;
-export type UpdateItem = (item: ItemDto) => void;
-export type GetUser = () => User | undefined;
-export type GetItem = (itemId: number) => Promise<ItemDto>;
-export type GetUserItemByName = (
-  userId: string,
-  name: string
-) => Promise<ItemDto | undefined>;
-
-import { ItemEntity } from "@/entites/item";
 
 export function itemToCreateItemDtoMapper(item: ItemEntity): CreateItemDto {
   return {

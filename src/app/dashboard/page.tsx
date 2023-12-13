@@ -1,7 +1,7 @@
-import { getItems } from "@/data-access/items";
 import { CreateItemForm } from "./create-item-form";
 import { ItemsTable } from "./items-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getItems } from "@/data-access/items/get-items.persistence";
 import { partition } from "lodash";
 import { unstable_noStore } from "next/cache";
 

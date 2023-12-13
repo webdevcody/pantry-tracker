@@ -8,7 +8,7 @@ import { HTMLAttributes, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
-import { createItemAction } from "./_actions/create-item-action";
+import { createItemAction } from "./_actions/create-item.action";
 import { cn } from "@/lib/utils";
 
 export function CreateItemForm() {

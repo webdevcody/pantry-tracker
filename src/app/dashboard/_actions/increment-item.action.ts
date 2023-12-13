@@ -2,9 +2,10 @@
 
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import { updateItem, getItem } from "@/data-access/items";
-import { State } from "./decrement-item-action";
-import { incrementItemUseCase } from "@/use-cases/items/increment-item-use-case";
+import { State } from "./decrement-item.action";
+import { incrementItemUseCase } from "@/use-cases/items/increment-item.use-case";
+import { getItem } from "@/data-access/items/get-item.persistence";
+import { updateItem } from "@/data-access/items/update-item.persistence";
 
 export async function incrementItemAction(
   state: State,

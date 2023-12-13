@@ -1,8 +1,8 @@
 "use server";
 
-import { deleteItem } from "@/data-access/items";
+import { deleteItem } from "@/data-access/items/delete-item.persistence";
 import { auth } from "@/lib/auth";
-import { deleteItemUseCase } from "@/use-cases/items/delete-item-use-case";
+import { deleteItemUseCase } from "@/use-cases/items/delete-item.use-case";
 import { revalidatePath } from "next/cache";
 
 export type DeleteFormState = {

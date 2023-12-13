@@ -1,12 +1,6 @@
 import { ItemEntity } from "@/entites/item";
-import {
-  GetUser,
-  UpdateItem,
-  GetItem,
-  AuthenticationError,
-  itemToDto,
-  DeleteItem,
-} from "./utils";
+import { AuthenticationError, itemToDto } from "./utils";
+import { GetUser, DeleteItem, UpdateItem, GetItem } from "./types";
 
 export async function decrementItemUseCase(
   context: {

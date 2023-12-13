@@ -27,13 +27,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { deleteItemAction } from "./_actions/delete-item-action";
-import { incrementItemAction } from "./_actions/increment-item-action";
-import { decrementItemAction } from "./_actions/decrement-item-action";
+import { deleteItemAction } from "./_actions/delete-item.action";
+import { incrementItemAction } from "./_actions/increment-item.action";
+import { decrementItemAction } from "./_actions/decrement-item.action";
 import { useFormState } from "react-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { markAsLowAction } from "./_actions/mark-as-low-action";
-import { unmarkAsLowAction } from "./_actions/unmark-as-low-action";
+import { markAsLowAction } from "./_actions/mark-as-low.action";
+import { unmarkAsLowAction } from "./_actions/unmark-as-low.action";
 
 export type Item = {
   id: number;
