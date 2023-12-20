@@ -12,7 +12,7 @@ export async function Header() {
   return (
     <div className="border-b py-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex gap-1 items-center text-xl">
+        <Link href="/" className="flex gap-1 items-center text-xl">
           <Image
             src="/logo.png"
             width="50"
@@ -20,7 +20,7 @@ export async function Header() {
             alt="pantry tracker logo"
           />{" "}
           PantryTracker
-        </div>
+        </Link>
 
         <div>
           {user && (
