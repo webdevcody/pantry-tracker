@@ -3,7 +3,7 @@ I'll update this later
 ## Getting Started
 
 ```bash
-cp .env.sample env
+cp .env.sample .env
 docker compose up
 npm i
 npm run db:push
